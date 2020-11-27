@@ -29,4 +29,14 @@ public class PolicyServiceImpl implements IPolicyService {
         policyDTO.setType(policy.getType());
         return policyDTO;
     }
+
+    @Override
+    public PolicyDTO savePolicy(Policy policy) {
+        Policy policy1 = null;
+        PolicyDTO policyInserted = null;
+        policy1 = policyRepository.save(policy);
+        if (null != policy1)
+            policyInserted = convertToDTO(policy1);
+        return policyInserted;
+    }
 }

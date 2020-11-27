@@ -23,4 +23,12 @@ public class AdminController {
         PolicyDTO policy = policyService.getById(id);
         return new ResponseEntity<>(policy, HttpStatus.OK);
     }
+
+    @PostMapping("/save-policy")
+    public ResponseEntity<PolicyDTO> savePolicy(@RequestBody Policy policy) {
+        PolicyDTO policy1 = policyService.savePolicy(policy);
+        if (null != policy1)
+            return new ResponseEntity<>(policy1, HttpStatus.OK);
+        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
