@@ -5,9 +5,11 @@ import guarantee.backend.model.Policy;
 import guarantee.backend.repositories.PolicyRepository;
 import guarantee.backend.service.IPolicyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Service
+@Component("PolicyService")
 public class PolicyServiceImpl implements IPolicyService {
     @Autowired
     private PolicyRepository policyRepository;

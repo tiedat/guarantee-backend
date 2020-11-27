@@ -2,6 +2,7 @@ package guarantee.backend.service;
 
 import guarantee.backend.DTO.PolicyDTO;
 import guarantee.backend.model.Policy;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Service
