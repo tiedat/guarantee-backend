@@ -5,16 +5,15 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "PROVINCE")
+@Table(name = "ACCOUNT")
 @Data
-public class Province {
+public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private String username;
+    private String password;
 
-    private String name;
-
-    private String code;
-
-    private String area;
+    @ManyToOne
+    private Role role;
 }

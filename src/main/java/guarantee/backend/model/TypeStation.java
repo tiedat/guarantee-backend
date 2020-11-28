@@ -5,16 +5,12 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "PROVINCE")
+@Table(name = "TYPESTATION")
 @Data
-public class Province {
+public class TypeStation {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String name;
-
-    private String code;
-
-    private String area;
+    private String type;
 }
