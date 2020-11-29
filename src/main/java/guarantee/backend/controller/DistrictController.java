@@ -24,4 +24,10 @@ public class DistrictController {
         List<District> list = districtService.getByProvinceId(id);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
+
+    @GetMapping("/get/{proname}")
+    public ResponseEntity<List<District>> getByProvinceName(@PathVariable("proname") String proname) {
+        List<District> list = districtService.getByProvinceName(proname);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
 }

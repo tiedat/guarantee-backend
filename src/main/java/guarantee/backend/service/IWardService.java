@@ -8,4 +8,6 @@ import java.util.List;
 @Service
 public interface IWardService {
     List<Ward> getByDistrictId(Long idDistrict);
+
+    List<Ward> getByProNameDistrictName(String proName, String districtName);
 }

@@ -1,5 +1,6 @@
 package guarantee.backend.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -7,9 +8,13 @@ import javax.persistence.*;
 @Entity
 @Table(name = "ROLE")
 @Data
+@AllArgsConstructor
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String role;
+
+    public Role() {
+    }
 }

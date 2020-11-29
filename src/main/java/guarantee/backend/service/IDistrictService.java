@@ -8,4 +8,6 @@ import java.util.List;
 @Service
 public interface IDistrictService {
     List<District> getByProvinceId(Long idProvince);
+
+    List<District> getByProvinceName(String provinceName);
 }

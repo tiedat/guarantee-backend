@@ -22,4 +22,10 @@ public class DistrictServiceImpl implements IDistrictService {
         List<District> list = districtRepository.getAllByProvinceIdEquals(idProvince);
         return list;
     }
+
+    @Override
+    public List<District> getByProvinceName(String provinceName) {
+        List<District> list = districtRepository.getAllByProvince_NameEquals(provinceName);
+        return list;
+    }
 }

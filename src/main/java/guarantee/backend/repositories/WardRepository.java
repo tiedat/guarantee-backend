@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface WardRepository extends CrudRepository<Ward, Long> {
     List<Ward> getAllByDistrictIdEquals(Long idDistrict);
+    List<Ward> getAllByProvince_NameEqualsAndDistrict_NameEquals(String provinceName, String districtName);
+
 }

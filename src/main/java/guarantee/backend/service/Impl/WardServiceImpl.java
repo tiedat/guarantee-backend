@@ -21,4 +21,10 @@ public class WardServiceImpl implements IWardService {
         List<Ward> list = wardRepository.getAllByDistrictIdEquals(idDistrict);
         return list;
     }
+
+    @Override
+    public List<Ward> getByProNameDistrictName(String proName, String districtName) {
+        List<Ward> list = wardRepository.getAllByProvince_NameEqualsAndDistrict_NameEquals(proName, districtName);
+        return list;
+    }
 }
