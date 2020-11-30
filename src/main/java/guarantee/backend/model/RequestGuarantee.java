@@ -38,20 +38,26 @@ public class RequestGuarantee {
     @Column(name="phone")
     private String phone;
 
+    @Column(name="phone2")
+    private String phone2;
+
     @Column(name="email")
     private String email;
 
-    @Column(name="product_name")
-    private String productName;
+    @Column(name="product")
+    private String product;
 
-    @Column(name="product_imei")
-    private String productImei;
+    @Column(name="model_product")
+    private String modelProduct;
+
+    @Column(name="serial")
+    private String serial;
 
     @Column(name="description")
     private String description;
 
-    @Column(name="status")
-    private String status;
+    @Column(name = "status")
+    private String status = "active";
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
