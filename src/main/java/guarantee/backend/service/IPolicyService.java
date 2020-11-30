@@ -10,4 +10,6 @@ public interface IPolicyService {
     PolicyDTO getById(Long id);
 
     PolicyDTO convertToDTO(Policy policy);
+
+    PolicyDTO savePolicy(Policy policy);
 }
