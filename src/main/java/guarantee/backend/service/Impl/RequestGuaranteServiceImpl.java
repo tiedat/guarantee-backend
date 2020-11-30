@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class RequestGuaranteServiceImpl implements RequestGuaranteService {
 
     @Autowired
-    RequestGuaranteeRepository<RequestGuarantee,Long> requestGuaranteeRepository;
+    RequestGuaranteeRepository requestGuaranteeRepository;
 
     @Override
     public boolean saveRequestGuarante(RequestGuaranteeDTO requestGuaranteeDTO) {
