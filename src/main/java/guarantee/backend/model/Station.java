@@ -31,4 +31,5 @@ public class Station {
     private String banknumber;
     private String beneficiary;
     private String status;
+    private String area;
 }

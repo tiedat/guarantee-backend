@@ -3,9 +3,11 @@ package guarantee.backend.service.Impl;
 import guarantee.backend.DTO.StationDTO;
 import guarantee.backend.model.Station;
 import guarantee.backend.repositories.StationRepository;
+import guarantee.backend.service.IProvinceService;
 import guarantee.backend.service.IStationService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,10 @@ public class StationServiceImpl implements IStationService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    @Qualifier("ProvinceService")
+    private IProvinceService provinceService;
+
     private String encodePassword(String password) {
         return passwordEncoder.encode(password);
     }
@@ -30,9 +36,10 @@ public class StationServiceImpl implements IStationService {
     @Override
     public boolean signUpStation(StationDTO stationDTO) {
         try {
-            stationDTO.setStatus("PENDING");
-            stationDTO.setPassword(encodePassword(stationDTO.getPassword()));
             Station station = modelMapper.map(stationDTO, Station.class);
+            station.setStatus("PENDING");
+            station.setPassword(encodePassword(stationDTO.getPassword()));
+            station.setArea(provinceService.getAreaByName(station.getProvince()));
             repository.save(station);
             return true;
         } catch (Exception e) {
