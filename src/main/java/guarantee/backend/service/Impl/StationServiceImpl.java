@@ -11,7 +11,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +27,8 @@ public class StationServiceImpl implements IStationService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private EntityManager entityManager;
 
     @Autowired
     @Qualifier("ProvinceService")
@@ -59,5 +64,47 @@ public class StationServiceImpl implements IStationService {
     @Override
     public StationDTO mapToDTO(Station station) {
         return modelMapper.map(station, StationDTO.class);
+    }
+
+    @Override
+    public List<StationDTO> getAllPending() {
+        List<Station> list = repository.getAllByStatusEquals("PENDING");
+        return list.stream().map(this::mapToDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<StationDTO> getAllAccept() {
+        List<Station> list = repository.getAllByStatusEquals("ACCEPTED");
+        return list.stream().map(this::mapToDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public boolean acceptStation(Long id) {
+        boolean isAccepted = false;
+        try {
+            Query query = entityManager.createNamedQuery("Station.accept");
+            int result = query.setParameter("id", id).executeUpdate();
+            if (result > 0)
+                isAccepted = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return isAccepted;
+    }
+
+    @Override
+    @Transactional
+    public boolean removeStation(Long id) {
+        boolean isRemoved = false;
+        try {
+            Query query = entityManager.createNamedQuery("Station.remove");
+            int result = query.setParameter("id", id).executeUpdate();
+            if (result > 0)
+                isRemoved = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return isRemoved;
     }
 }

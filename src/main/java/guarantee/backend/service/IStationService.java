@@ -13,4 +13,12 @@ public interface IStationService {
     List<StationDTO> getAll();
 
     StationDTO mapToDTO(Station station);
+
+    List<StationDTO> getAllPending();
+
+    List<StationDTO> getAllAccept();
+
+    boolean acceptStation(Long id);
+
+    boolean removeStation(Long id);
 }
