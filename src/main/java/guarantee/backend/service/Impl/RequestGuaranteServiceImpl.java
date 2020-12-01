@@ -7,6 +7,10 @@ import guarantee.backend.service.RequestGuaranteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 @Service
 public class RequestGuaranteServiceImpl implements RequestGuaranteService {
 
@@ -21,7 +25,21 @@ public class RequestGuaranteServiceImpl implements RequestGuaranteService {
 
     @Override
     public RequestGuaranteeDTO searchBySerial(String serial) {
-        return (RequestGuaranteeDTO) requestGuaranteeRepository.findBySearial(serial);
+        RequestGuarantee requestGuarantee = requestGuaranteeRepository.findBySearial(serial);
+        return this.convertModelToDTO(requestGuarantee);
+    }
+
+    @Override
+    public List<RequestGuarantee> findAll(String serial) {
+        Iterable<RequestGuarantee> iterator = requestGuaranteeRepository.findAll();
+                List result = new ArrayList();
+        if(null == iterator){
+            return result;
+        }
+        for (RequestGuarantee requestGuarantee : iterator) {
+            result.add(requestGuarantee);
+        }
+        return result;
     }
 
     private RequestGuarantee convertDtoToModel(RequestGuaranteeDTO requestGuaranteeDTO) {
@@ -39,6 +57,24 @@ public class RequestGuaranteServiceImpl implements RequestGuaranteService {
         requestGuarantee.setSerial(requestGuaranteeDTO.getSerial());
         requestGuarantee.setDescription(requestGuaranteeDTO.getDescription());
         requestGuarantee.setStatus(requestGuaranteeDTO.getStatus());
+        return requestGuarantee;
+    }
+
+    private RequestGuaranteeDTO convertModelToDTO(RequestGuarantee model) {
+        RequestGuaranteeDTO requestGuarantee = new RequestGuaranteeDTO();
+        requestGuarantee.setCustomerName(model.getCustomerName());
+        requestGuarantee.setAddress(model.getAddress());
+        requestGuarantee.setProvince(model.getProvince());
+        requestGuarantee.setDistrict(model.getDistrict());
+        requestGuarantee.setWard(model.getWard());
+        requestGuarantee.setPhone(model.getPhone());
+        requestGuarantee.setPhone2(model.getPhone2());
+        requestGuarantee.setEmail(model.getEmail());
+        requestGuarantee.setProduct(model.getProduct());
+        requestGuarantee.setModelProduct(model.getModelProduct());
+        requestGuarantee.setSerial(model.getSerial());
+        requestGuarantee.setDescription(model.getDescription());
+        requestGuarantee.setStatus(model.getStatus());
         return requestGuarantee;
     }
 }
