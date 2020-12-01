@@ -28,4 +28,6 @@ public class RequestGuaranteeDTO {
     private String serial;
 
     private String description;
+
+    private String status = "active";
 }

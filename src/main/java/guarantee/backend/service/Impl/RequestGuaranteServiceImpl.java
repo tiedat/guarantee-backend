@@ -19,6 +19,11 @@ public class RequestGuaranteServiceImpl implements RequestGuaranteService {
         return requestGuarantee != null ? true : false;
     }
 
+    @Override
+    public RequestGuaranteeDTO searchBySerial(String serial) {
+        return (RequestGuaranteeDTO) requestGuaranteeRepository.findBySearial(serial);
+    }
+
     private RequestGuarantee convertDtoToModel(RequestGuaranteeDTO requestGuaranteeDTO) {
         RequestGuarantee requestGuarantee = new RequestGuarantee();
         requestGuarantee.setCustomerName(requestGuaranteeDTO.getCustomerName());
@@ -33,6 +38,7 @@ public class RequestGuaranteServiceImpl implements RequestGuaranteService {
         requestGuarantee.setModelProduct(requestGuaranteeDTO.getModelProduct());
         requestGuarantee.setSerial(requestGuaranteeDTO.getSerial());
         requestGuarantee.setDescription(requestGuaranteeDTO.getDescription());
+        requestGuarantee.setStatus(requestGuaranteeDTO.getStatus());
         return requestGuarantee;
     }
 }

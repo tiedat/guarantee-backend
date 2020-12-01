@@ -23,4 +23,15 @@ public class RequestGuaranteeController {
         }
         return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @PostMapping("/get")
+    public ResponseEntity<RequestGuaranteeDTO> savePolicy(@RequestBody String serial) {
+        RequestGuaranteeDTO result = requestGuaranteService.searchBySerial(serial);
+        if (null != result){
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        if (null == result) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
 }

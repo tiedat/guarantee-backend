@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RequestGuaranteeRepository extends CrudRepository<RequestGuarantee, Long> {
+    RequestGuarantee findBySerial(String serial);
 }
