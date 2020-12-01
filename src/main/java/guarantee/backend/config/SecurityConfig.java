@@ -51,16 +51,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-//                .antMatchers("/register").permitAll()
-//                .antMatchers("/home")
+                .antMatchers("/register").permitAll()
+//                .antMatchers("/api/auth/**")
+//                .authenticated()
+                .antMatchers("/api/station/register")
+                .authenticated()
+//                .antMatchers("/api/district/**")
+//                .authenticated()
+//                .antMatchers("/api/ward/**")
+//                .authenticated()
+//                .antMatchers("/api/policy/**")
 //                .authenticated()
                 .anyRequest()
                 .permitAll();
-//                .antMatchers("/admin/**")
-//                .hasRole("ADMIN")
-//                .and()
-//                .exceptionHandling()
-//                .accessDeniedPage("/403");
     }
 
     @Bean

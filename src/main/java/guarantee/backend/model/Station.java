@@ -7,6 +7,13 @@ import javax.persistence.*;
 @Entity
 @Table(name = "STATION")
 @Data
+@NamedQueries({
+        @NamedQuery(name = "Station.accept",
+                query = "UPDATE Station s SET s.status='ACCEPTED' where s.id=:id"
+        ),
+        @NamedQuery(name = "Station.remove",
+                query = "delete from Station  s where  s.id=:id")
+})
 public class Station {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
