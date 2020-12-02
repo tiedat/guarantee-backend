@@ -39,12 +39,12 @@ public class RequestGuaranteeController {
         return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping("/findall")
-    public ResponseEntity<List<RequestGuarantee>> findAllRequestGuarantee(@RequestBody String serial) {
-        List<RequestGuarantee> result = requestGuaranteService.findAll(serial);
-        if (result.size() > 0){
+    @GetMapping("/get")
+    public ResponseEntity<List<RequestGuaranteeDTO>> getAllRequestGuarantee() {
+        List<RequestGuaranteeDTO> result = requestGuaranteService.findAll();
+        if (null != result){
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
-        return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
     }
 }

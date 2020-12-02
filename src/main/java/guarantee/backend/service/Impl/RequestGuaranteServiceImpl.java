@@ -25,19 +25,19 @@ public class RequestGuaranteServiceImpl implements RequestGuaranteService {
 
     @Override
     public RequestGuaranteeDTO searchBySerial(String serial) {
-        RequestGuarantee requestGuarantee = requestGuaranteeRepository.findBySearial(serial);
+        RequestGuarantee requestGuarantee = requestGuaranteeRepository.findBySerial(serial);
         return this.convertModelToDTO(requestGuarantee);
     }
 
     @Override
-    public List<RequestGuarantee> findAll(String serial) {
+    public List<RequestGuaranteeDTO> findAll() {
         Iterable<RequestGuarantee> iterator = requestGuaranteeRepository.findAll();
                 List result = new ArrayList();
         if(null == iterator){
             return result;
         }
         for (RequestGuarantee requestGuarantee : iterator) {
-            result.add(requestGuarantee);
+            result.add(convertModelToDTO(requestGuarantee));
         }
         return result;
     }

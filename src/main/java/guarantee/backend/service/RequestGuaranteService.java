@@ -8,5 +8,5 @@ import java.util.List;
 public interface RequestGuaranteService {
     boolean saveRequestGuarante(RequestGuaranteeDTO requestGuaranteeDTO);
     RequestGuaranteeDTO searchBySerial(String serial);
-    List<RequestGuarantee> findAll(String serial);
+    List<RequestGuaranteeDTO> findAll();
 }
