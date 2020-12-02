@@ -1,8 +1,6 @@
 package guarantee.backend.DTO;
 
 import lombok.Data;
-
-import java.sql.Date;
 import java.time.LocalDate;
 
 @Data
