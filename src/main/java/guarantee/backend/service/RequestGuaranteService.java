@@ -9,4 +9,6 @@ public interface RequestGuaranteService {
     boolean saveRequestGuarante(RequestGuaranteeDTO requestGuaranteeDTO);
     RequestGuaranteeDTO searchBySerial(String serial);
     List<RequestGuaranteeDTO> findAll();
+    boolean rejectBySerial(String serial);
+    boolean acceptBySerial(String serial);
 }

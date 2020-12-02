@@ -47,4 +47,22 @@ public class RequestGuaranteeController {
         }
         return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
     }
+
+    @PostMapping("/accept")
+    public ResponseEntity acceptRequestGuarantee(@RequestBody String serial) {
+        boolean result = requestGuaranteService.acceptBySerial(serial);
+        if (result) {
+            return new ResponseEntity<>(result,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(result,HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/reject")
+    public ResponseEntity rejectRequestGuarantee(@RequestBody String serial) {
+        boolean result = requestGuaranteService.rejectBySerial(serial);
+        if (result) {
+            return new ResponseEntity<>(result,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(result,HttpStatus.BAD_REQUEST);
+    }
 }

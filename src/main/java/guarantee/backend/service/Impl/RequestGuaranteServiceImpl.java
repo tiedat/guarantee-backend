@@ -42,6 +42,28 @@ public class RequestGuaranteServiceImpl implements RequestGuaranteService {
         return result;
     }
 
+    @Override
+    public boolean rejectBySerial(String serial) {
+        RequestGuarantee requestGuarantee = requestGuaranteeRepository.findBySerial(serial);
+        requestGuarantee.setStatus("reject");
+        RequestGuarantee result = requestGuaranteeRepository.save(requestGuarantee);
+        if (null == result) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean acceptBySerial(String serial) {
+        RequestGuarantee requestGuarantee = requestGuaranteeRepository.findBySerial(serial);
+        requestGuarantee.setStatus("accept");
+        RequestGuarantee result = requestGuaranteeRepository.save(requestGuarantee);
+        if (null == result) {
+            return false;
+        }
+        return true;
+    }
+
     private RequestGuarantee convertDtoToModel(RequestGuaranteeDTO requestGuaranteeDTO) {
         RequestGuarantee requestGuarantee = new RequestGuarantee();
         requestGuarantee.setCustomerName(requestGuaranteeDTO.getCustomerName());
