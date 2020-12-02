@@ -52,7 +52,7 @@ public class RequestGuaranteeController {
     public ResponseEntity acceptRequestGuarantee(@RequestBody String serial) {
         boolean result = requestGuaranteService.acceptBySerial(serial);
         if (result) {
-            return new ResponseEntity<>(result,HttpStatus.OK);
+            return new ResponseEntity<>(null,HttpStatus.OK);
         }
         return new ResponseEntity<>(result,HttpStatus.BAD_REQUEST);
     }
@@ -61,7 +61,7 @@ public class RequestGuaranteeController {
     public ResponseEntity rejectRequestGuarantee(@RequestBody String serial) {
         boolean result = requestGuaranteService.rejectBySerial(serial);
         if (result) {
-            return new ResponseEntity<>(result,HttpStatus.OK);
+            return new ResponseEntity<>(null,HttpStatus.OK);
         }
         return new ResponseEntity<>(result,HttpStatus.BAD_REQUEST);
     }

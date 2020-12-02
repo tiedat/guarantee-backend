@@ -65,6 +65,9 @@ public class RequestGuaranteServiceImpl implements RequestGuaranteService {
     }
 
     private RequestGuarantee convertDtoToModel(RequestGuaranteeDTO requestGuaranteeDTO) {
+        if(null == requestGuaranteeDTO){
+            return null;
+        }
         RequestGuarantee requestGuarantee = new RequestGuarantee();
         requestGuarantee.setCustomerName(requestGuaranteeDTO.getCustomerName());
         requestGuarantee.setAddress(requestGuaranteeDTO.getAddress());
@@ -83,6 +86,9 @@ public class RequestGuaranteServiceImpl implements RequestGuaranteService {
     }
 
     private RequestGuaranteeDTO convertModelToDTO(RequestGuarantee model) {
+        if(null == model){
+            return null;
+        }
         RequestGuaranteeDTO requestGuarantee = new RequestGuaranteeDTO();
         requestGuarantee.setCustomerName(model.getCustomerName());
         requestGuarantee.setAddress(model.getAddress());
