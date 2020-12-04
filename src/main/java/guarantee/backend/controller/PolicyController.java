@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/policy")
-public class AdminController {
+public class PolicyController {
     @Qualifier("PolicyService")
     @Autowired
     private IPolicyService policyService;

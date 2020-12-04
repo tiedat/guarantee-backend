@@ -9,6 +9,10 @@ import javax.persistence.*;
 @Table(name = "ROLE")
 @Data
 @AllArgsConstructor
+@NamedQueries({
+        @NamedQuery(name = "Role.getAllUnderAdmin"
+                , query = "SELECT r.role from Role r where r.role not in ('ROLE_ADMIN')")
+})
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
