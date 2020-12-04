@@ -25,7 +25,6 @@ public class Product implements Serializable {
 
     private String description;
 
-    @NotEmpty
     private Integer periodMonthWarranty;
 
 }

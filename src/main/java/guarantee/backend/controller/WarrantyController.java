@@ -1,21 +1,18 @@
 package guarantee.backend.controller;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonValueFormat;
 import guarantee.backend.DTO.WarrantyActiveDTO;
 import guarantee.backend.model.Customer;
 import guarantee.backend.model.Product;
 import guarantee.backend.model.WarrantyCard;
 import guarantee.backend.service.IWarrantyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Objects;
-import java.util.TimeZone;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -35,7 +32,7 @@ public class WarrantyController {
         }
 
         Customer customer = warrantyCard.getCustomer();
-        if (Objects.nonNull(customer)) {
+        if (Objects.isNull(customer)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(warrantyCard, HttpStatus.ACCEPTED);
@@ -67,5 +64,11 @@ public class WarrantyController {
             return new ResponseEntity<>(msg.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+    }
+
+    @PostMapping(value = "/uploadDataWarranty", consumes = "multipart/form-data")
+    public ResponseEntity<?> uploadDataWarranty(@RequestParam MultipartFile file) throws Throwable {
+        warrantyService.uploadDataWarranty(file);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
