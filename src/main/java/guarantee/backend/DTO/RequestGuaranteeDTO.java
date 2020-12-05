@@ -1,5 +1,6 @@
 package guarantee.backend.DTO;
 
+import guarantee.backend.model.Product;
 import lombok.Data;
 
 
@@ -21,13 +22,15 @@ public class RequestGuaranteeDTO {
 
     private String email;
 
-    private String product;
+    private String createTime;
 
-    private String modelProduct;
+    private String doneTime;
 
     private String serial;
 
     private String description;
 
     private String status = "active";
+
+    private Product product;
 }

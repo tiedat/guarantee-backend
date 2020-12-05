@@ -44,11 +44,11 @@ public class RequestGuarantee {
     @Column(name="email")
     private String email;
 
-    @Column(name="product")
-    private String product;
+    @Column(name="create_time")
+    private String createTime;
 
-    @Column(name="model_product")
-    private String modelProduct;
+    @Column(name="done_time")
+    private String doneTime;
 
     @Column(name="serial")
     private String serial;
