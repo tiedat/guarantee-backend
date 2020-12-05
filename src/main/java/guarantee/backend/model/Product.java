@@ -1,57 +1,31 @@
 package guarantee.backend.model;
 
-
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 
 @Entity
-@Table(name = "product")
-@Cacheable
+@Table(name = "PRODUCT")
 @Data
-public class Product {
-
-    private static final long serialVersionUID=1L;
+public class Product implements Serializable {
 
     @Id
-    @GeneratedValue(generator = "sequence")
-    @GenericGenerator(name = "sequence", strategy = "sequence", parameters = {
-            @org.hibernate.annotations.Parameter(name = "sequence", value = "PRODUCT_SEQ")
-    })
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "name")
+    @Column(length = 20)
+    private String productCode;
+
+    @NotEmpty
     private String name;
 
-    @Column(name = "vendor")
-    private String vendor;
+    private String image;
 
-    @Column(name = "unit_weight")
-    private String unitWeight;
-
-    @Column(name = "description")
     private String description;
 
-    @Column(name = "base_price")
-    private String basePrice;
+    @NotEmpty
+    private Integer periodMonthWarranty;
 
-    @Column(name = "product_available")
-    private Long productAvailable;
-
-    @Column(name = "discount_available")
-    private Long discountAvailable;
-
-    @Column(name = "category_id")
-    private Long categoryId;
-
-    @Column(name = "product_imei")
-    private String productImei;
-
-    @Column(name = "status")
-    private String status;
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
 }

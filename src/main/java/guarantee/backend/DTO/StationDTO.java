@@ -26,4 +26,5 @@ public class StationDTO {
     private String banknumber;
     private String beneficiary;
     private String status;
+    private String area;
 }

@@ -1,6 +1,7 @@
 package guarantee.backend.controller;
 
 import guarantee.backend.DTO.StationDTO;
+import guarantee.backend.model.Station;
 import guarantee.backend.service.IStationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,15 +20,41 @@ public class StationController {
     private IStationService stationService;
 
     @PostMapping("/register")
-    public HttpStatus registerStation(@RequestBody StationDTO stationDTO) {
+    public ResponseEntity registerStation(@RequestBody StationDTO stationDTO) {
         if (stationService.signUpStation(stationDTO)) {
-            return HttpStatus.OK;
+            return new ResponseEntity(HttpStatus.OK);
         }
-        return HttpStatus.INTERNAL_SERVER_ERROR;
+        return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @GetMapping("/getall")
     public ResponseEntity<List<StationDTO>> getAll() {
         return new ResponseEntity<>(stationService.getAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/all-pending")
+    public ResponseEntity<List<StationDTO>> getAllPending() {
+        List<StationDTO> list = stationService.getAllPending();
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @GetMapping("/all-accepted")
+    public ResponseEntity<List<StationDTO>> getAllAccepted() {
+        List<StationDTO> list = stationService.getAllAccept();
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @PostMapping("/accept")
+    public ResponseEntity acceptStation(@RequestBody Long id) {
+        if (stationService.acceptStation(id))
+            return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @PostMapping("/remove")
+    public ResponseEntity removeStation(@RequestBody Long id) {
+        if (stationService.removeStation(id))
+            return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

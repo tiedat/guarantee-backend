@@ -9,4 +9,6 @@ import java.util.List;
 public interface IProvinceService {
 
     List<Province> getAll();
+
+    String getAreaByName(String name);
 }
