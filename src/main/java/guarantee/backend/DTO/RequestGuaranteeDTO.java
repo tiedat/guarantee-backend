@@ -33,4 +33,6 @@ public class RequestGuaranteeDTO {
     private String status = "active";
 
     private Product product;
+
+    private String id;
 }

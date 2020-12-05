@@ -91,6 +91,7 @@ public class RequestGuaranteServiceImpl implements RequestGuaranteService {
         }
         RequestGuarantee requestGuarantee = new RequestGuarantee();
         requestGuarantee.setCustomerName(requestGuaranteeDTO.getCustomerName());
+        requestGuarantee.setId(Long.valueOf(requestGuaranteeDTO.getId()));
         requestGuarantee.setAddress(requestGuaranteeDTO.getAddress());
         requestGuarantee.setProvince(requestGuaranteeDTO.getProvince());
         requestGuarantee.setDistrict(requestGuaranteeDTO.getDistrict());
@@ -113,6 +114,8 @@ public class RequestGuaranteServiceImpl implements RequestGuaranteService {
         RequestGuaranteeDTO requestGuarantee = new RequestGuaranteeDTO();
         WarrantyCard warrantyCard = this.warrantyService.findBySerialNumber(model.getSerial());
         requestGuarantee.setProduct(warrantyCard.getProduct());
+        Long id = model.getId();
+        requestGuarantee.setId(id.toString());
         requestGuarantee.setCustomerName(model.getCustomerName());
         requestGuarantee.setAddress(model.getAddress());
         requestGuarantee.setProvince(model.getProvince());
