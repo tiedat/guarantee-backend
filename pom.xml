@@ -11,7 +11,6 @@
     <groupId>guarantee</groupId>
     <artifactId>backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
     <name>backend</name>
     <description>guarantee web app</description>
 
@@ -101,6 +100,7 @@
             <artifactId>commons-collections4</artifactId>
             <version>4.1</version>
         </dependency>
+
 
     </dependencies>
 

@@ -1,6 +1,5 @@
 package guarantee.backend.DTO;
 
-import jdk.nashorn.internal.objects.annotations.Constructor;
 import lombok.Data;
 
 @Data
