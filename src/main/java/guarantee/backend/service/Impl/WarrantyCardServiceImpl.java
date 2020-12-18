@@ -17,8 +17,14 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.FileInputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +43,9 @@ public class WarrantyCardServiceImpl implements IWarrantyService {
 
     @Autowired
     private EntityManager entityManager;
+
+    @Autowired
+    private HttpServletRequest request;
 
     @Override
     public WarrantyCard findBySerialNumber(String serialNumber) {
@@ -73,23 +82,45 @@ public class WarrantyCardServiceImpl implements IWarrantyService {
     public void uploadDataWarranty(MultipartFile file) throws Throwable {
 
         StringBuilder queryBuilder = new StringBuilder();
-        String catabase = System.getProperty( "catalina.base");
-        File fileTmp = new File(catabase, "uploadFile.xlsx");
-        queryBuilder.append("INSERT INTO warranty (SERIAL_NUMBER,PRODUCT_CODE) VALUES \n");
-
+        String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMddHHmmss-"));
+        String uploadsDir = "/uploads/";
+        String realPathToUploads = request.getServletContext().getRealPath(uploadsDir);
+        if (!new File(realPathToUploads).exists()) {
+            new File(realPathToUploads).mkdir();
+        }
+        String fileName = date + file.getOriginalFilename();
+        String filePath = realPathToUploads + fileName;
+        System.out.println(realPathToUploads);
+        File fileTmp = new File(filePath);
         file.transferTo(fileTmp);
-        Workbook wb = new XSSFWorkbook(fileTmp);
+
+
+        Workbook wb = new XSSFWorkbook(new FileInputStream(fileTmp));
         Sheet sheet = wb.getSheetAt(0);
         List<Row> rowList = new ArrayList<>();
         sheet.rowIterator().forEachRemaining(rowList::add);
-        for (int i = 0; i < rowList.size(); i++) {
+
+        queryBuilder.append("INSERT INTO warranty (SERIAL_NUMBER,PRODUCT_CODE) VALUES \n");
+        for (int i = 1; i < rowList.size(); i++) {
             Row row = rowList.get(i);
+
+
+            Cell serialCell = row.getCell(0);
+            Cell prodCodeCell = row.getCell(1);
+            serialCell.setCellType(CellType.STRING);
+            prodCodeCell.setCellType(CellType.STRING);
+            String serialNumber = serialCell.getStringCellValue();
+            String productCode = prodCodeCell.getStringCellValue();
+
+            if (serialNumber.isEmpty() || serialNumber.isBlank()
+                    || productCode.isEmpty() || productCode.isBlank()) {
+                if (i == rowList.size() - 1) {
+                    queryBuilder.setLength(queryBuilder.length() - 2);
+                }
+                continue;
+            }
             queryBuilder.append("('");
-
-            String serialNumber = row.getCell(0).getStringCellValue();
             queryBuilder.append(serialNumber).append("','");
-
-            String productCode = row.getCell(1).getStringCellValue();
 
             if (i == rowList.size() - 1) {
                 queryBuilder.append(productCode).append("')");
@@ -97,9 +128,17 @@ public class WarrantyCardServiceImpl implements IWarrantyService {
                 queryBuilder.append(productCode).append("'),\n");
             }
         }
-
-        Query query = entityManager.createNativeQuery(queryBuilder.toString());
-        query.executeUpdate();
+        try {
+            Query query = entityManager.createNativeQuery(queryBuilder.toString());
+            query.executeUpdate();
+        } finally {
+            wb.close();
+            if (fileTmp.delete()) {
+                System.out.println(fileTmp.getName() + " is deleted!");
+            } else {
+                System.out.println("Sorry, unable to delete the file.");
+            }
+        }
     }
 }
 
