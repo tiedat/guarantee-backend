@@ -112,8 +112,7 @@ public class WarrantyCardServiceImpl implements IWarrantyService {
             String serialNumber = serialCell.getStringCellValue();
             String productCode = prodCodeCell.getStringCellValue();
 
-            if (serialNumber.isEmpty() || serialNumber.isBlank()
-                    || productCode.isEmpty() || productCode.isBlank()) {
+            if (serialNumber.trim().isEmpty() || productCode.trim().isEmpty()) {
                 if (i == rowList.size() - 1) {
                     queryBuilder.setLength(queryBuilder.length() - 2);
                 }

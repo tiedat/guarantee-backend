@@ -2,31 +2,42 @@ package guarantee.backend.service.Impl;
 
 import guarantee.backend.DTO.RequestGuaranteeDTO;
 import guarantee.backend.model.RequestGuarantee;
+import guarantee.backend.model.WarrantyCard;
 import guarantee.backend.repositories.RequestGuaranteeRepository;
+import guarantee.backend.service.IWarrantyService;
 import guarantee.backend.service.RequestGuaranteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class RequestGuaranteServiceImpl implements RequestGuaranteService {
 
     @Autowired
     RequestGuaranteeRepository requestGuaranteeRepository;
+    @Autowired
+    IWarrantyService warrantyService;
 
     @Override
     public boolean saveRequestGuarante(RequestGuaranteeDTO requestGuaranteeDTO) {
+        requestGuaranteeDTO.setCreateTime((new Date()).toString());
         RequestGuarantee requestGuarantee = requestGuaranteeRepository.save(convertDtoToModel(requestGuaranteeDTO));
         return requestGuarantee != null ? true : false;
     }
 
     @Override
-    public RequestGuaranteeDTO searchBySerial(String serial) {
-        RequestGuarantee requestGuarantee = requestGuaranteeRepository.findBySerial(serial);
-        return this.convertModelToDTO(requestGuarantee);
+    public List<RequestGuaranteeDTO> searchBySerial(String serial) {
+        List<RequestGuarantee> requestGuarantee = requestGuaranteeRepository.findBySerial(serial);
+        List<RequestGuaranteeDTO> results = new ArrayList<>();
+        int size = requestGuarantee.size();
+        if (null == requestGuarantee) {
+            return null;
+        }
+        for (int i = 0; i < size; i++) {
+            results.add(this.convertModelToDTO(requestGuarantee.get(i)));
+        }
+        return results;
     }
 
     @Override
@@ -43,9 +54,14 @@ public class RequestGuaranteServiceImpl implements RequestGuaranteService {
     }
 
     @Override
-    public boolean rejectBySerial(String serial) {
-        RequestGuarantee requestGuarantee = requestGuaranteeRepository.findBySerial(serial);
+    public boolean rejectBySerial(String id) {
+        Optional<RequestGuarantee> optional =  requestGuaranteeRepository.findById(Long.valueOf(id));
+        RequestGuarantee requestGuarantee = optional.get();
+        if (optional == null || requestGuarantee == null) {
+            return false;
+        }
         requestGuarantee.setStatus("reject");
+        requestGuarantee.setDoneTime((new Date()).toString());
         RequestGuarantee result = requestGuaranteeRepository.save(requestGuarantee);
         if (null == result) {
             return false;
@@ -54,9 +70,14 @@ public class RequestGuaranteServiceImpl implements RequestGuaranteService {
     }
 
     @Override
-    public boolean acceptBySerial(String serial) {
-        RequestGuarantee requestGuarantee = requestGuaranteeRepository.findBySerial(serial);
+    public boolean acceptBySerial(String id) {
+        Optional<RequestGuarantee> optional =  requestGuaranteeRepository.findById(Long.valueOf(id));
+        RequestGuarantee requestGuarantee = optional.get();
+        if (optional == null || requestGuarantee == null) {
+            return false;
+        }
         requestGuarantee.setStatus("accept");
+        requestGuarantee.setDoneTime((new Date()).toString());
         RequestGuarantee result = requestGuaranteeRepository.save(requestGuarantee);
         if (null == result) {
             return false;
@@ -70,6 +91,7 @@ public class RequestGuaranteServiceImpl implements RequestGuaranteService {
         }
         RequestGuarantee requestGuarantee = new RequestGuarantee();
         requestGuarantee.setCustomerName(requestGuaranteeDTO.getCustomerName());
+        requestGuarantee.setId(Long.valueOf(requestGuaranteeDTO.getId()));
         requestGuarantee.setAddress(requestGuaranteeDTO.getAddress());
         requestGuarantee.setProvince(requestGuaranteeDTO.getProvince());
         requestGuarantee.setDistrict(requestGuaranteeDTO.getDistrict());
@@ -77,8 +99,8 @@ public class RequestGuaranteServiceImpl implements RequestGuaranteService {
         requestGuarantee.setPhone(requestGuaranteeDTO.getPhone());
         requestGuarantee.setPhone2(requestGuaranteeDTO.getPhone2());
         requestGuarantee.setEmail(requestGuaranteeDTO.getEmail());
-        requestGuarantee.setProduct(requestGuaranteeDTO.getProduct());
-        requestGuarantee.setModelProduct(requestGuaranteeDTO.getModelProduct());
+        requestGuarantee.setCreateTime(requestGuaranteeDTO.getCreateTime());
+        requestGuarantee.setDoneTime(requestGuaranteeDTO.getDoneTime());
         requestGuarantee.setSerial(requestGuaranteeDTO.getSerial());
         requestGuarantee.setDescription(requestGuaranteeDTO.getDescription());
         requestGuarantee.setStatus(requestGuaranteeDTO.getStatus());
@@ -90,6 +112,10 @@ public class RequestGuaranteServiceImpl implements RequestGuaranteService {
             return null;
         }
         RequestGuaranteeDTO requestGuarantee = new RequestGuaranteeDTO();
+        WarrantyCard warrantyCard = this.warrantyService.findBySerialNumber(model.getSerial());
+        requestGuarantee.setProduct(warrantyCard.getProduct());
+        Long id = model.getId();
+        requestGuarantee.setId(id.toString());
         requestGuarantee.setCustomerName(model.getCustomerName());
         requestGuarantee.setAddress(model.getAddress());
         requestGuarantee.setProvince(model.getProvince());
@@ -98,8 +124,8 @@ public class RequestGuaranteServiceImpl implements RequestGuaranteService {
         requestGuarantee.setPhone(model.getPhone());
         requestGuarantee.setPhone2(model.getPhone2());
         requestGuarantee.setEmail(model.getEmail());
-        requestGuarantee.setProduct(model.getProduct());
-        requestGuarantee.setModelProduct(model.getModelProduct());
+        requestGuarantee.setCreateTime(model.getCreateTime());
+        requestGuarantee.setDoneTime(model.getDoneTime());
         requestGuarantee.setSerial(model.getSerial());
         requestGuarantee.setDescription(model.getDescription());
         requestGuarantee.setStatus(model.getStatus());

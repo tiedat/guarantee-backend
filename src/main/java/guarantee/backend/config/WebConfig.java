@@ -15,12 +15,17 @@ public class WebConfig {
     }
 
     @Bean
-    public Role roleUser() {
-        return new Role(2L, "ROLE_USER");
+    public Role roleSaler() {
+        return new Role(2L, "ROLE_SALER");
     }
 
     @Bean
     public Role roleAdmin() {
         return new Role(1L, "ROLE_ADMIN");
+    }
+
+    @Bean
+    public Role roleTech() {
+        return new Role(3L, "ROLE_TECHNICIANS");
     }
 }

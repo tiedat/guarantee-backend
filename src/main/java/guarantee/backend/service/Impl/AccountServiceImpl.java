@@ -3,8 +3,10 @@ package guarantee.backend.service.Impl;
 import guarantee.backend.DTO.AccountDTO;
 import guarantee.backend.DTO.LoginDTO;
 import guarantee.backend.model.Account;
+import guarantee.backend.model.Role;
 import guarantee.backend.repositories.AccountRepository;
 import guarantee.backend.service.IAccountService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -32,6 +35,14 @@ public class AccountServiceImpl implements IAccountService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private ModelMapper modelMapper;
+    @Autowired
+    private Role roleAdmin;
+    @Autowired
+    private Role roleSaler;
+    @Autowired
+    private Role roleTech;
 
     @Override
     public Account getByUsername(String username) {
@@ -76,6 +87,48 @@ public class AccountServiceImpl implements IAccountService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+    }
+
+    @Override
+    public List<Account> getAll() {
+        List<Account> list = (List<Account>) repository.findAll();
+        return list;
+    }
+
+    @Override
+    public boolean deleteAccount(Long id) {
+        try {
+            repository.deleteById(id);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean createAccount(AccountDTO dto) {
+        try {
+            Account account = modelMapper.map(dto, Account.class);
+            account.setPassword(encodePassword(account.getPassword()));
+            String role = dto.getRole();
+            switch (role) {
+                case "ROLE_SALER": {
+                    account.setRole(roleSaler);
+                    break;
+                }
+                case "ROLE_TECHNICIANS": {
+                    account.setRole(roleTech);
+                    break;
+                }
+
+            }
+            repository.save(account);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
