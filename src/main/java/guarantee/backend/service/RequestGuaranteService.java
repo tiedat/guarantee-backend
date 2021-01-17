@@ -6,7 +6,7 @@ import guarantee.backend.model.RequestGuarantee;
 import java.util.List;
 
 public interface RequestGuaranteService {
-    boolean saveRequestGuarante(RequestGuaranteeDTO requestGuaranteeDTO);
+    boolean saveRequestGuarantee(RequestGuaranteeDTO requestGuaranteeDTO);
     List<RequestGuaranteeDTO> searchBySerial(String serial);
     List<RequestGuaranteeDTO> findAll();
     boolean rejectBySerial(String serial);

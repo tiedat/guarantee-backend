@@ -1,6 +1,7 @@
 package guarantee.backend.controller;
 
 import guarantee.backend.DTO.WarrantyActiveDTO;
+import guarantee.backend.DTO.WarrantyCardDTO;
 import guarantee.backend.model.Customer;
 import guarantee.backend.model.Product;
 import guarantee.backend.model.WarrantyCard;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -27,7 +29,6 @@ public class WarrantyController {
         try {
             warrantyCard = warrantyService.findBySerialNumber(serialNumber);
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -70,5 +71,17 @@ public class WarrantyController {
     public ResponseEntity<?> uploadDataWarranty(@RequestParam MultipartFile file) throws Throwable {
         warrantyService.uploadDataWarranty(file);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/status/{status}")
+    public ResponseEntity<List<WarrantyCard>> findByStatus(@PathVariable(value = "status") int status) {
+        List<WarrantyCard> warrantyCardList = warrantyService.findByStatus(status);
+        return new ResponseEntity<>(warrantyCardList, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<List<WarrantyCardDTO>> findAllNonActive() {
+        List<WarrantyCardDTO> warrantyCardDTOList = warrantyService.getAllWarrantyCardDTO();
+        return new ResponseEntity<>(warrantyCardDTOList, HttpStatus.OK);
     }
 }

@@ -20,7 +20,7 @@ public class RequestGuaranteServiceImpl implements RequestGuaranteService {
     IWarrantyService warrantyService;
 
     @Override
-    public boolean saveRequestGuarante(RequestGuaranteeDTO requestGuaranteeDTO) {
+    public boolean saveRequestGuarantee(RequestGuaranteeDTO requestGuaranteeDTO) {
         requestGuaranteeDTO.setCreateTime((new Date()).toString());
         RequestGuarantee requestGuarantee = requestGuaranteeRepository.save(convertDtoToModel(requestGuaranteeDTO));
         return requestGuarantee != null ? true : false;
@@ -111,24 +111,24 @@ public class RequestGuaranteServiceImpl implements RequestGuaranteService {
         if(null == model){
             return null;
         }
-        RequestGuaranteeDTO requestGuarantee = new RequestGuaranteeDTO();
+        RequestGuaranteeDTO requestGuaranteeDTO = new RequestGuaranteeDTO();
         WarrantyCard warrantyCard = this.warrantyService.findBySerialNumber(model.getSerial());
-        requestGuarantee.setProduct(warrantyCard.getProduct());
+        requestGuaranteeDTO.setProduct(warrantyCard.getProduct());
         Long id = model.getId();
-        requestGuarantee.setId(id.toString());
-        requestGuarantee.setCustomerName(model.getCustomerName());
-        requestGuarantee.setAddress(model.getAddress());
-        requestGuarantee.setProvince(model.getProvince());
-        requestGuarantee.setDistrict(model.getDistrict());
-        requestGuarantee.setWard(model.getWard());
-        requestGuarantee.setPhone(model.getPhone());
-        requestGuarantee.setPhone2(model.getPhone2());
-        requestGuarantee.setEmail(model.getEmail());
-        requestGuarantee.setCreateTime(model.getCreateTime());
-        requestGuarantee.setDoneTime(model.getDoneTime());
-        requestGuarantee.setSerial(model.getSerial());
-        requestGuarantee.setDescription(model.getDescription());
-        requestGuarantee.setStatus(model.getStatus());
-        return requestGuarantee;
+        requestGuaranteeDTO.setId(id.toString());
+        requestGuaranteeDTO.setCustomerName(model.getCustomerName());
+        requestGuaranteeDTO.setAddress(model.getAddress());
+        requestGuaranteeDTO.setProvince(model.getProvince());
+        requestGuaranteeDTO.setDistrict(model.getDistrict());
+        requestGuaranteeDTO.setWard(model.getWard());
+        requestGuaranteeDTO.setPhone(model.getPhone());
+        requestGuaranteeDTO.setPhone2(model.getPhone2());
+        requestGuaranteeDTO.setEmail(model.getEmail());
+        requestGuaranteeDTO.setCreateTime(model.getCreateTime());
+        requestGuaranteeDTO.setDoneTime(model.getDoneTime());
+        requestGuaranteeDTO.setSerial(model.getSerial());
+        requestGuaranteeDTO.setDescription(model.getDescription());
+        requestGuaranteeDTO.setStatus(model.getStatus());
+        return requestGuaranteeDTO;
     }
 }

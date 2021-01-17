@@ -1,9 +1,6 @@
 package guarantee.backend.controller;
 
 import guarantee.backend.DTO.RequestGuaranteeDTO;
-import guarantee.backend.model.RequestGuarantee;
-import guarantee.backend.model.WarrantyCard;
-import guarantee.backend.service.IWardService;
 import guarantee.backend.service.IWarrantyService;
 import guarantee.backend.service.RequestGuaranteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +23,7 @@ public class RequestGuaranteeController {
 
     @PostMapping("/save")
     public ResponseEntity<RequestGuaranteeDTO> saveRequestGuarantee(@RequestBody RequestGuaranteeDTO requestGuaranteeDTO) {
-        Boolean saveStatus = requestGuaranteService.saveRequestGuarante(requestGuaranteeDTO);
+        Boolean saveStatus = requestGuaranteService.saveRequestGuarantee(requestGuaranteeDTO);
         if (saveStatus) {
             return new ResponseEntity<>(null, HttpStatus.OK);
         }
@@ -84,10 +81,11 @@ public class RequestGuaranteeController {
 
     @GetMapping("/checkserial/{serial}")
     public ResponseEntity checkSerial(@RequestParam String serial) {
-        WarrantyCard warrantyCard = warrantyService.findBySerialNumber(serial);
-        if (null != warrantyCard) {
-            return new ResponseEntity(null, HttpStatus.ACCEPTED);
+        try {
+            warrantyService.findBySerialNumber(serial);
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity("not found", HttpStatus.NOT_FOUND);
     }
 }

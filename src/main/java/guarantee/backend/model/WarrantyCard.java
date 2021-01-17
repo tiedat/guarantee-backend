@@ -1,18 +1,34 @@
 package guarantee.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import guarantee.backend.DTO.WarrantyCardDTO;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.sql.Date;
 import java.time.LocalDate;
-import java.util.Calendar;
 
 @Entity
 @Table(name = "WARRANTY")
 @Data
+@SqlResultSetMapping(
+        name = "mappingWarrantyCardDTO",
+        classes = {
+                @ConstructorResult(
+                        targetClass = WarrantyCardDTO.class,
+                        columns = {
+                                @ColumnResult(name = "id", type = Long.class),
+                                @ColumnResult(name = "serial_Number"),
+                                @ColumnResult(name = "customer_Id", type = Long.class),
+                                @ColumnResult(name = "product_code"),
+                                @ColumnResult(name = "start_Time", type = LocalDate.class),
+                                @ColumnResult(name = "end_Time", type = LocalDate.class),
+                                @ColumnResult(name = "sold_Date", type = LocalDate.class),
+                                @ColumnResult(name = "store_Addr"),
+                                @ColumnResult(name = "store_Phone"),
+                        }
+                )
+        }
+)
 public class WarrantyCard {
 
     @Id

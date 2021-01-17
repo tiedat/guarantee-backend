@@ -1,13 +1,18 @@
 package guarantee.backend.service.Impl;
 
 import guarantee.backend.DTO.WarrantyActiveDTO;
+import guarantee.backend.DTO.WarrantyCardDTO;
 import guarantee.backend.model.Customer;
 import guarantee.backend.model.Product;
 import guarantee.backend.model.WarrantyCard;
 import guarantee.backend.repositories.CustomerRepository;
+import guarantee.backend.repositories.WarrantyCardDAO;
 import guarantee.backend.repositories.WarrantyCardRepository;
 import guarantee.backend.service.IWarrantyService;
 import org.apache.poi.ss.usermodel.*;
+import org.hibernate.Session;
+import org.hibernate.query.NativeQuery;
+import org.hibernate.transform.Transformers;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +51,9 @@ public class WarrantyCardServiceImpl implements IWarrantyService {
 
     @Autowired
     private HttpServletRequest request;
+
+    @Autowired
+    private WarrantyCardDAO warrantyCardDAO;
 
     @Override
     public WarrantyCard findBySerialNumber(String serialNumber) {
@@ -90,10 +98,8 @@ public class WarrantyCardServiceImpl implements IWarrantyService {
         }
         String fileName = date + file.getOriginalFilename();
         String filePath = realPathToUploads + fileName;
-        System.out.println(realPathToUploads);
         File fileTmp = new File(filePath);
         file.transferTo(fileTmp);
-
 
         Workbook wb = new XSSFWorkbook(new FileInputStream(fileTmp));
         Sheet sheet = wb.getSheetAt(0);
@@ -104,9 +110,8 @@ public class WarrantyCardServiceImpl implements IWarrantyService {
         for (int i = 1; i < rowList.size(); i++) {
             Row row = rowList.get(i);
 
-
-            Cell serialCell = row.getCell(0);
-            Cell prodCodeCell = row.getCell(1);
+            Cell serialCell = row.getCell(0, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);
+            Cell prodCodeCell = row.getCell(1, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);
             serialCell.setCellType(CellType.STRING);
             prodCodeCell.setCellType(CellType.STRING);
             String serialNumber = serialCell.getStringCellValue();
@@ -138,6 +143,31 @@ public class WarrantyCardServiceImpl implements IWarrantyService {
                 System.out.println("Sorry, unable to delete the file.");
             }
         }
+    }
+
+    @Override
+    public List<WarrantyCard> findByStatus(int status) {
+        List<WarrantyCard> warrantyCardList;
+        if (status == 0) {
+            warrantyCardList = warrantyCardRepository.findByCustomerIsNull();
+        } else {
+            warrantyCardList = warrantyCardRepository.findByCustomerIsNotNull();
+        }
+        return warrantyCardList;
+    }
+
+    @Override
+    public List<WarrantyCardDTO> getAllWarrantyCardDTO() {
+            String sql = "SELECT * FROM warranty WHERE customer_id is null";
+            Query query = entityManager.createNativeQuery(sql).unwrap(NativeQuery.class)
+                    .setResultSetMapping("mappingWarrantyCardDTO");
+
+
+//                    .setResultTransformer(Transformers.aliasToBean(WarrantyCardDTO.class));
+
+
+
+            return query.getResultList();
     }
 }
 
